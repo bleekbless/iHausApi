@@ -17,6 +17,12 @@ class CreateTelefonesTable extends Migration
             $table->unsignedInteger('idUsuario')
                 ->nullable();
 
+            $table->unsignedInteger('universidade_id')
+                ->nullable();
+
+            $table->unsignedInteger('republica_id')
+                ->nullable();
+
             $table->string('numeroTelefone', 50);
 
 
@@ -32,6 +38,17 @@ class CreateTelefonesTable extends Migration
                 ->references('id')
                 ->on('usuarios')
                 ->onDelete('cascade');
+
+            $table->foreign('universidade_id')
+                ->references('id')
+                ->on('universidades')
+                ->onDelete('cascade');
+                
+            $table->foreign('republica_id')
+                ->references('id')
+                ->on('republicas')
+                ->onDelete('cascade');
+
                 
 
         });

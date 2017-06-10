@@ -48,6 +48,10 @@ $app->singleton(
     App\Console\Kernel::class
 );
 
+$app->singleton('cookie', function () use ($app){
+    return $app->loadComponent('session', 'Illuminate\Cookie\CookieServiceProvider', 'cookie');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Register Middleware
@@ -59,13 +63,19 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->bind(Illuminate\Session\SessionManager::class, function ($app) {
+    return new Illuminate\Session\SessionManager($app);
+});
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+ $app->middleware([
+     Illuminate\Session\Middleware\StartSession::class,
+     //Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+ ]);
+
+ $app->routeMiddleware([
+   'auth' =>  \App\Http\Middleware\Authenticate::class,
+   
+ ]);
 
 /*
 |--------------------------------------------------------------------------
@@ -79,8 +89,18 @@ $app->singleton(
 */
 
 $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(\Illuminate\Auth\Passwords\PasswordResetServiceProvider::class);
+$app->register(\Illuminate\Mail\MailServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+$app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->register(\Illuminate\Session\SessionServiceProvider::class);
+$app->alias('mailer', \Illuminate\Contracts\Mail\Mailer::class);
+
+$app->configure('services');
+$app->configure('mail');
+$app->configure('session');
+
 
 /*
 |--------------------------------------------------------------------------

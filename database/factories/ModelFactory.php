@@ -89,3 +89,53 @@ $factory->define(App\Universidade::class, function ($faker) {
         'endereco_id' => $faker->key,
     ];
 });
+
+/**
+ * Factory definition for model App\Imagem.
+ */
+$factory->define(App\Imagem::class, function ($faker) {
+    return [
+        'republica_id' => $faker->key,
+    ];
+});
+
+/**
+ * Factory definition for model App\TipoRepublica.
+ */
+$factory->define(App\TipoRepublica::class, function ($faker) {
+    return [
+        // Fields here
+    ];
+});
+
+/**
+ * Factory definition for model App\Republica.
+ */
+$factory->define(App\Republica::class, function ($faker) {
+    return [
+        'quantidadeQuartos' => $faker->nullable,
+        'quantidadeMoradores' => $faker->nullable,
+        'tipo_republica' => $faker->key,
+        'universidade' => $faker->key,
+        'endereco' => $faker->key,
+        'usuario_id' => $faker->key
+    ];
+});
+
+/**
+ * Factory definition for model App\Conveniencia.
+ */
+$factory->define(App\Conveniencia::class, function ($faker) {
+    return [
+        // Fields here
+    ];
+});
+
+/**
+ * Factory definition for model App\Vaga.
+ */
+$factory->define(App\Vaga::class, function ($faker) {
+    return [
+        'republica_id' => $faker->key,
+    ];
+});

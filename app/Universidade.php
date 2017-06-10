@@ -19,5 +19,14 @@ class Universidade extends Model {
         return $this->belongsTo("App\Endereco");
     }
 
+    public function telefones()
+    {
+        return $this->hasMany("App\Telefone");
+    }
+
+    public function republicas(){
+        return $this->hasMany("App\Republica");
+    }
+
 
 }

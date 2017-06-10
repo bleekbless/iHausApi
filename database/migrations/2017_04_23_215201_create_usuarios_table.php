@@ -12,8 +12,8 @@ class CreateUsuariosTable extends Migration
             $table->increments('id');
             $table->string('nome', 100);
             $table->string('sobrenome', 100);
-            $table->string('email');
-            $table->string('senha');
+            $table->string('email')->unique();
+            $table->string('password');
             // Constraints declaration
             $table->timestamps();
         });
