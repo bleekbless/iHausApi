@@ -16,7 +16,7 @@ class Conveniencia extends Model {
 
     public function republicas()
     {
-        return $this->belongsToMany("App\Republica", "conveniencium_republica")->withTimestamps();
+        return $this->belongsToMany("App\Republica")->withTimestamps();
     }
 
 

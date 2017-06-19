@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TipoTelefone extends Model {
 
+    protected $table = "tipoTelefones";
     protected $fillable = ["descricao"];
 
     protected $dates = [];
@@ -14,5 +15,9 @@ class TipoTelefone extends Model {
     ];
 
     // Relationships
+
+    public function telefones(){
+        return $this->hasMany("App\Telefone");
+    }
 
 }

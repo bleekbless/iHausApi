@@ -1,4 +1,3 @@
-<?php session_start() ?>
 @section('title')
 {{ 'Cadastrar Cidade'}}
 @endsection
@@ -85,9 +84,6 @@ function deleteCidade(r, id){
     $.ajax({
     url: "/api/cidade/"+id,
     type: "DELETE",
-    headers: {
-        'api-token': '{{ $_SESSION['token'] }}'
-    },
     success: function(data){
         document.getElementById("tabelaCidades").deleteRow(row);
     }
@@ -111,9 +107,6 @@ $("#formCidade").submit(function(event){
     data: formData,
     async: true,
     cache: false,
-    headers: {
-        'api-token': '{{ $_SESSION['token'] }}'
-    },
     contentType: false,
     processData: false,
     success: function (returndata) {

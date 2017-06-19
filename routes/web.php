@@ -13,6 +13,9 @@ $app->group(['prefix' => 'api'], function() use ($app){
         //Loga um Usuario
         $app->post('login', 'UsuariosController@login');
 
+        //Desloga o usuario
+        $app->get('logout', 'UsuariosController@logout');
+
         $app->group(['prefix' => 'password'], function() use ($app){
 
             $app->post('/email', 'PasswordController@postEmail');
@@ -97,7 +100,7 @@ $app->group(['prefix' => 'api'], function() use ($app){
     });
 
     $app->group(['prefix'=>'universidade', 'middleware'=> 'auth'], function() use ($app){
-        $app->post('', 'UniversidadesController@add');
+        $app->post('', 'UniversidadesController@cadastrarUniversidade');
         $app->put('{id}', 'UniversidadesController@put');
         $app->delete('{id}', 'UniversidadesController@remove');
     });
@@ -123,12 +126,23 @@ $app->group(['prefix' => 'api'], function() use ($app){
         $app->delete('{id}', 'TipoRepublicasController@remove');
     });
 
+    $app->group(['prefix'=>'tipo-telefone'], function() use ($app){
+        $app->get('', 'TipoTelefonesController@all');
+        $app->get('{id}', 'TipoTelefonesController@get');
+    });
+
+    $app->group(['prefix'=>'tipo-telefone', 'middleware'=> 'auth'], function() use ($app){
+        $app->post('', 'TipoTelefonesController@add');
+        $app->put('{id}', 'TipoTelefonesController@put');
+        $app->delete('{id}', 'TipoTelefonesController@remove');
+    });
+
     $app->group(['prefix'=>'republica'], function() use ($app){
         $app->get('', 'RepublicasController@all');
         $app->get('{id}', 'RepublicasController@get');
     });
 
-    $app->group(['prefix'=>'republica'/*, 'middleware'=> 'auth'*/], function() use ($app){
+    $app->group(['prefix'=>'republica', 'middleware'=> 'auth'], function() use ($app){
         $app->post('', 'RepublicasController@cadastrarRepublica');
         $app->put('{id}', 'RepublicasController@put');
         $app->delete('{id}', 'RepublicasController@remove');
@@ -168,11 +182,18 @@ $app->get('/', function () use ($app) {
 
 
 $app->group(['prefix' => 'admin'], function() use ($app){
-    $app->group(['prefix' => 'cadastrar'], function() use ($app){
+
+    $app->get('/login', function () use ($app) {
+        return view('auth.login');
+    });
+
+    $app->group(['prefix' => 'cadastrar', 'middleware' => 'auth'], function() use ($app){
 
         $app->get('/tipo-republica', function () use ($app) {
             return view('admin.tiporep');
         });
+
+        $app->get('/tipotel', 'TipoTelefonesController@index');
 
         $app->get('/bairro', 'BairrosController@index');
 
@@ -185,8 +206,5 @@ $app->group(['prefix' => 'admin'], function() use ($app){
         $app->get('/universidade', 'UniversidadesController@index');
 
     });
-});
-$app->get('/dashboard', function () use ($app) {
-    return view('auth.login');
 });
 

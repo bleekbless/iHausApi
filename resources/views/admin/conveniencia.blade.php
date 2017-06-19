@@ -1,4 +1,3 @@
-<?php session_start() ?>
 @section('title')
 {{ 'Cadastrar Conveniencia'}}
 @endsection
@@ -71,9 +70,6 @@ function deleteConveniencia(r, id){
     $.ajax({
     url: "/api/conveniencia/"+id,
     type: "DELETE",
-    headers: {
-        'api-token': '{{ $_SESSION['token'] }}'
-    },
     success: function(data){
         document.getElementById("tabelaConveniencia").deleteRow(row);
     }
@@ -97,9 +93,6 @@ $("#formConv").submit(function(event){
     data: formData,
     async: true,
     cache: false,
-    headers: {
-        'api-token': '{{ $_SESSION['token'] }}'
-    },
     contentType: false,
     processData: false,
     success: function (returndata) {

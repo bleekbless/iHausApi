@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Usuario;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Http\Response;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
+use Illuminate\Support\Facades\Session;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -34,11 +36,16 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->app['auth']->viaRequest('api', function ($request) {
 
-                $token = $request->header('api-token');
+            
 
-                if(!$token){
-                    return null;
-                }
+            if( $request->header('api-token') != null ){
+                $token = $request->header('api-token');
+            }else
+            if(isset($_SESSION['token'])) {
+                $token = $_SESSION['token'];
+            }else{
+                return null;
+            }
 
                 if($token){
                     

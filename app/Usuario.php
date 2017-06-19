@@ -24,8 +24,8 @@ class Usuario extends Model implements CanResetPasswordContract {
     public static $rules = [
         "nome" => "required",
         "sobrenome" => "required",
-        "password" => "required",
-        "email" => "required"
+        "password" => "required | same:repeatPass",
+        "email" => "required | unique:usuarios"
     ];
 
     // Relationships
@@ -42,5 +42,6 @@ class Usuario extends Model implements CanResetPasswordContract {
     {
         return $this->belongsToMany("App\Vaga")->withTimestamps();
     }
+
 
 }

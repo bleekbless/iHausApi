@@ -16,19 +16,22 @@ class CreateRepublicasTable extends Migration
             $table->tinyInteger('quantidadeMoradores')->nullable();
             $table->text('descricao');
             $table->integer('tipo_republica')->unsigned();
-            $table->integer('universidade')->unsigned()->nullable();
-            $table->integer('endereco')->unsigned();
+            $table->integer('universidade_id')->unsigned()->nullable();
+            $table->integer('endereco_id')->unsigned();
             $table->integer('usuario_id')->unsigned();
 
             $table->foreign('tipo_republica')
                 ->references('id')
                 ->on('tipoRepublicas');
-            $table->foreign('universidade')
+
+            $table->foreign('universidade_id')
                 ->references('id')
                 ->on('universidades');
-            $table->foreign('endereco')
+
+            $table->foreign('endereco_id')
                 ->references('id')
                 ->on('enderecos');
+
             $table->foreign('usuario_id')
                 ->references('id')
                 ->on('usuarios');

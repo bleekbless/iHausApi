@@ -4,13 +4,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Universidade extends Model {
 
-    protected $fillable = ["nomeUniversidade", "endereco_id"];
+    protected $fillable = ["nomeUniversidade", "endereco_id", "cnpj"];
 
     protected $dates = [];
 
+    protected $hidden = ['cnpj'];
+
     public static $rules = [
         "nomeUniversidade" => "required",
-        "cnpj" => "required",
+        "cnpj" => "required | unique:universidades",
         "endereco_id" => "required|numeric",
     ];
 

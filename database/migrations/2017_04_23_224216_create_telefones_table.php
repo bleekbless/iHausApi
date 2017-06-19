@@ -12,9 +12,9 @@ class CreateTelefonesTable extends Migration
 
             $table->increments('id');
 
-            $table->unsignedSmallInteger('idTipoTelefone');
+            $table->unsignedSmallInteger('tipoTelefone_id');
 
-            $table->unsignedInteger('idUsuario')
+            $table->unsignedInteger('usuario_id')
                 ->nullable();
 
             $table->unsignedInteger('universidade_id')
@@ -29,12 +29,12 @@ class CreateTelefonesTable extends Migration
             // Constraints declaration
             $table->timestamps();
 
-            $table->foreign('idTipoTelefone')
+            $table->foreign('tipoTelefone_id')
                 ->references('id')
-                ->on('tipotelefones')
+                ->on('tipoTelefones')
                 ->onDelete('cascade');
 
-            $table->foreign('idUsuario')
+            $table->foreign('usuario_id')
                 ->references('id')
                 ->on('usuarios')
                 ->onDelete('cascade');

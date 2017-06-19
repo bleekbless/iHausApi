@@ -8,6 +8,8 @@ use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
     
+use Auth;
+use Illuminate\Support\Facades\Session;
 
 class UsuariosController extends Controller {
 
@@ -41,7 +43,7 @@ class UsuariosController extends Controller {
         $user = $m::create($request->all());
 
         //Salva os telefones do usuario 1 ou muitos
-        if(isset($telenos)){
+        if(isset($telefones)){
             foreach ($telefones as $key => $telefone) {   
             $user->telefones()
              ->save($t::create([
@@ -53,37 +55,46 @@ class UsuariosController extends Controller {
 
         $token = $this->generateToken($user);
 
-        return $this->respond('200', ['token' => ''.$token]);
+        return $this->respond('200', ['usuario' => $user, 'token' => $token->getToken() ]);
     }
 
     public function login(Request $request){
+
+        
         $m = $this::MODEL;
         
         $signer = new Sha256(); 
 
         if(!$request['email'] || !$request['password']){
-           return $this->respond('500', "Email e/ou senha não informados.");
+           return $this->respond('500', ['error' => 'Email e/ou senha não informados.']);
         }
 
         $user = $m::where('email', $request['email'])
                     ->first();
 
+        if(!$user){
+            return $this->respond('500', ['error' => 'Usuário não encontrado.']);
+        }
+
         if(! app('hash')->check($request['password'], $user->password)){
             return $this->respond('500', ['error' => 'Senha incorreta.']);
         }
         
-
         $token = $this->generateToken($user);
 
-        if($user->id == 5){
-            session_start();
-            $_SESSION['token'] = $token;
-            
-            return view('app', ['token' => $token]);
+        if($user->id == 1){
+            $_SESSION['token'] = $token->getToken();
+            return view('dashboard');
         }
 
-        return $this->respond('200', ['token' => ''.$token]);
+        return $this->respond('200', ['usuario' => $user, 'token' => $token->getToken()]);
 
+    }
+
+    public function logout(){
+        if(session_id() != '')
+            session_destroy();
+            return redirect('/admin/login');
     }
 
     public function updateUsuarioComSenha(Request $request, $id){

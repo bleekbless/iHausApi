@@ -1,4 +1,3 @@
-<?php session_start() ?>
 @extends('layouts.public')
 
 @section('content')
@@ -50,15 +49,13 @@ $("#myForm").submit(function(event){
     data: formData,
     async: true,
     cache: false,
-    headers: {
-        'api-token': '{{ $_SESSION['token'] }}'
-    },
     contentType: false,
     processData: false,
     success: function (returndata) {
-      alert(returndata);
     }
   }).done(function( data ) {
+
+      $("#myForm")[0].reset();
       console.log( "Sample of data:" + data );
 
   });;

@@ -1,4 +1,3 @@
-<?php session_start() ?>
 @section('title')
     {{ 'Cadastrar Estado'}}
 @endsection
@@ -66,9 +65,6 @@
         $.ajax({
         url: "/api/estado/"+id,
         type: "DELETE",
-        headers: {
-            'api-token': '{{ $_SESSION['token'] }}'
-        },
         success: function(data){
             document.getElementById("tabelaEstado").deleteRow(row);
         }
@@ -92,9 +88,6 @@
             data: formData,
             async: true,
             cache: false,
-            headers: {
-                'api-token': '{{ $_SESSION['token'] }}'
-            },
             contentType: false,
             processData: false,
             success: function (returndata) {

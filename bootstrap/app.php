@@ -1,4 +1,4 @@
-<?php
+<?php  session_start();
 
 require_once __DIR__.'/../vendor/autoload.php';
 
@@ -69,12 +69,12 @@ $app->bind(Illuminate\Session\SessionManager::class, function ($app) {
 
  $app->middleware([
      Illuminate\Session\Middleware\StartSession::class,
+     
      //Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
  ]);
 
  $app->routeMiddleware([
    'auth' =>  \App\Http\Middleware\Authenticate::class,
-   
  ]);
 
 /*
@@ -93,7 +93,6 @@ $app->register(\Illuminate\Auth\Passwords\PasswordResetServiceProvider::class);
 $app->register(\Illuminate\Mail\MailServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
 $app->register(\Illuminate\Session\SessionServiceProvider::class);
 $app->alias('mailer', \Illuminate\Contracts\Mail\Mailer::class);
 

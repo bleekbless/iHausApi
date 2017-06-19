@@ -8,7 +8,7 @@ class CreateConvenienciumRepublicaTable extends Migration
 
     public function up()
     {
-        Schema::create('republica_conveniencia', function(Blueprint $table) {
+        Schema::create('conveniencia_republica', function(Blueprint $table) {
             $table->increments('id');
             
             $table->integer('conveniencia_id')->unsigned()->index();
@@ -27,6 +27,6 @@ class CreateConvenienciumRepublicaTable extends Migration
 
     public function down()
     {
-        Schema::drop('conveniencium_republica');
+        Schema::drop('conveniencia_republica');
     }
 }

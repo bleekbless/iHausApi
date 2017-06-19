@@ -7,7 +7,6 @@
     <meta name="author" content="@yield('author')">
     <meta name="description" content="@yield('description')">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <meta name="token" content="<?php if(isset($token)){echo $token;} ?>">
 
     <title>@yield('title', 'Haus')</title>
 
@@ -17,7 +16,7 @@
     @yield('styles')
     @yield('head')
 </head>
-<body>
+<body style="background-color: #f8f8f8">
     @section('header')
         <nav class="navbar navbar-default">
     <div class="container-fluid">
@@ -31,8 +30,7 @@
         </button>
         <a class="navbar-brand" href="#">Admin Haus</a>
         </div>
-
-        @if(!Auth::check())
+        @if(Auth::check())
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
@@ -43,25 +41,27 @@
             role="button" 
             aria-haspopup="true" aria-expanded="false">Cadastrar <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="/admin/cadastrar/tipo-republica?token=<?php if(isset($token)){echo $token;} ?>">Tipo Republica</a></li>
+                <li><a href="/admin/cadastrar/tipo-republica">Tipo Republica</a></li>
                 <li><a href="/admin/cadastrar/cidade">Cidade</a></li>
                 <li><a href="/admin/cadastrar/estado">Estado</a></li>
                 <li><a href="/admin/cadastrar/bairro">Bairro</a></li>
                 <li><a href="/admin/cadastrar/conveniencia">Conveniencia</a></li>
                 <li><a href="/admin/cadastrar/universidade">Universidade</a></li>
-                <li><a href="/admin/cadastrar/tipo-telefone">Tipo Telefone</a></li>     
+                <li><a href="/admin/cadastrar/tipotel">Tipo Telefone</a></li>     
             </ul>
             </li>
         </ul>
         @endif
+        @if(Auth::check())
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opções<span class="caret"></span></a>
             <ul class="dropdown-menu">
                 <li><a href="/api/usuario/logout">Sair</a></li>
             </ul>
             </li>
         </ul>
+        @endif
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
     </nav>

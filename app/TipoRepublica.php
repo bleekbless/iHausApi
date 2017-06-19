@@ -13,7 +13,7 @@ class TipoRepublica extends Model {
         "descricao" => "required",
     ];
 
-    public function republica()
+    public function republicas()
     {
         return $this->hasMany("App\Republica");
     }

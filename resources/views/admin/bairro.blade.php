@@ -1,4 +1,4 @@
-<?php session_start() ?>
+
 @extends('layouts.public')
 
 @section('content')
@@ -110,9 +110,6 @@ function deleteBairro(r, id){
     $.ajax({
     url: "/api/bairro/"+id,
     type: "DELETE",
-    headers: {
-        'api-token': '{{ $_SESSION['token'] }}'
-    },
     success: function(data){
         document.getElementById("tabelaBairros").deleteRow(row);
     }
@@ -136,9 +133,6 @@ $("#formBairro").submit(function(event){
     data: formData,
     async: true,
     cache: false,
-    headers: {
-        'api-token': '{{ $_SESSION['token'] }}'
-    },
     contentType: false,
     processData: false,
     success: function (returndata) {
