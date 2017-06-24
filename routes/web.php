@@ -176,16 +176,12 @@ $app->group(['prefix' => 'api'], function() use ($app){
 
 
 $app->get('/', function () use ($app) {
-    return "Api-Documentation para APP iHaus 2017";
+    return view('auth.login');
 });
-
 
 
 $app->group(['prefix' => 'admin'], function() use ($app){
 
-    $app->get('/login', function () use ($app) {
-        return view('auth.login');
-    });
 
     $app->group(['prefix' => 'cadastrar', 'middleware' => 'auth'], function() use ($app){
 

@@ -15,6 +15,9 @@ class ExampleMiddleware
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        return $next($request)
+        ->header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE')
+        ->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'))
+        ->header('Access-Control-Allow-Origin', '*');
     }
 }

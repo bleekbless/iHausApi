@@ -40,10 +40,17 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         
+        $response = $next($request);
+
+        $response->header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE');
+        $response->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
+        $response->header('Access-Control-Allow-Origin', '*');
+
+
         if ($this->auth->guard($guard)->guest()) {
             return view('auth.block');
         }
 
-        return $next($request);
+        return $response;
     }
 }
