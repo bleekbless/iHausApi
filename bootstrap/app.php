@@ -70,7 +70,7 @@ $app->bind(Illuminate\Session\SessionManager::class, function ($app) {
  $app->middleware([
      Illuminate\Session\Middleware\StartSession::class,
      
-     //Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+     \App\Http\Middleware\OptionsMiddleware::class,
  ]);
 
  $app->routeMiddleware([
