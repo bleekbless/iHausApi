@@ -10,17 +10,11 @@ class BairrosController extends Controller {
 
     use RESTActions;
 
-    public function index(){
+    public function findAll()
+    {
+        $m = $this::MODEL;
 
-        $bairros = Bairro::all();
-        $cidades = Cidade::all();
-        $estados = Estado::all();
-
-        return view('admin.bairro', [
-            'bairros' => $bairros, 
-            'cidades' => $cidades, 
-            'estados' => $estados
-            ]);
+        return $m::with('cidade', 'cidade.estado')->get();
     }
 
     public function getEnderecos($id)

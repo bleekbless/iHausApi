@@ -17,20 +17,18 @@ class UniversidadesController extends Controller
 
     use RESTActions, EnderecoTrait;
 
-    public function index()
+    public function findAll()
     {
 
-        $universidades = Universidade::all();
-        $tipos = TipoTelefone::all();
+        $m = $this::MODEL;
 
-        return view('admin.universidade', ['universidades' => $universidades, 'tipos' => $tipos]);
+        return $m::with('endereco', 'endereco.bairro', 'endereco.bairro.cidade', 'endereco.bairro.cidade.estado')->get();
     }
 
     public function cadastrarUniversidade(Request $request)
     {
-        
         //pegar o endereco
-        $endereco = json_decode($request['endereco']);
+        $endereco = json_decode(json_encode($request['endereco']), null);
 
         //checa se o estado ja existe no banco
         $estado = $this->checaEstado($endereco->estado);

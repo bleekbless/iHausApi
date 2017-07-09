@@ -15,8 +15,11 @@ class ConvenienciasController extends Controller {
         return view('admin.conveniencia', ['conveniencias'=>$conveniencias]);
     }
 
-    public function teste(){
-        echo "TESTANDO";
-    } 
+    public function getConveninenciasByRepublica ($id) {
+        $m = $this::MODEL;
+        
+        return $m::where('')
+
+    }
 
 }
