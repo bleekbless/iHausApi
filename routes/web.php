@@ -72,7 +72,7 @@ $app->group(['prefix' => 'api'], function() use ($app){
 
     $app->group(['prefix'=>'bairro'], function() use ($app){
         // /api/bairro
-        $app->get('', 'BairrosController@all');
+        $app->get('', 'BairrosController@findAll');
         $app->get('{id}', 'BairrosController@get');
     });
 
@@ -95,7 +95,7 @@ $app->group(['prefix' => 'api'], function() use ($app){
     });
 
     $app->group(['prefix'=>'universidade'], function() use ($app){
-        $app->get('', 'UniversidadesController@all');
+        $app->get('', 'UniversidadesController@findAll');
         $app->get('{id}', 'UniversidadesController@get');
     });
 
@@ -140,6 +140,7 @@ $app->group(['prefix' => 'api'], function() use ($app){
     $app->group(['prefix'=>'republica'], function() use ($app){
         $app->get('', 'RepublicasController@all');
         $app->get('{id}', 'RepublicasController@get');
+        $app->get('/buscar', 'RepublicasController@buscarRepublica');
     });
 
     $app->group(['prefix'=>'republica', 'middleware'=> 'auth'], function() use ($app){
@@ -197,7 +198,7 @@ $app->group(['prefix' => 'admin'], function() use ($app){
 
         $app->get('/bairro', 'BairrosController@index');
 
-        $app->get('/cidade', 'CidadesController@index');
+        $app->get('/cidade', 'CidadesController@findAll');
 
         $app->get('/estado', 'EstadosController@index');
 

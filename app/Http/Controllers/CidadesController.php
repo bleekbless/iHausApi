@@ -10,6 +10,18 @@ class CidadesController extends Controller {
     use RESTActions;
 
 
+    public function findAll(){
+        $m = $this::MODEL;
+
+        return $m::with('estado')->get();
+    }
+
+    public function findAllByEstado( $id ){
+        $m = $this::MODEL;
+
+        return $m::with('estado')->where('estado_id', $id)->get();
+    }
+
     public function index(){
 
         $cidades = Cidade::all();

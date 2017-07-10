@@ -55,7 +55,7 @@ class UsuariosController extends Controller {
 
         $token = $this->generateToken($user);
 
-        return $this->respond('200', ['usuario' => $user, 'token' => $token->getToken() ]);
+        return $this->respond('200', ['usuario' => $user, 'token' => $token->__toString() ]);
     }
 
     public function login(Request $request){
@@ -82,12 +82,12 @@ class UsuariosController extends Controller {
         
         $token = $this->generateToken($user);
 
-        if($user->id == 1){
-            $_SESSION['token'] = $token->getToken();
-            return view('dashboard');
-        }
+        // if($user->id == 1){
+        //     $_SESSION['token'] = $token->getToken();
+        //     return view('dashboard');
+        // }
 
-        return $this->respond('200', ['usuario' => $user, 'token' => $token->getToken()]);
+        return $this->respond('200', ['usuario' => $user, 'token' => $token->__toString()]);
 
     }
 

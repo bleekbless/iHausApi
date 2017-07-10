@@ -12,8 +12,8 @@ class CreateUniversidadesTable extends Migration
             $table->increments('id');
             $table->string('nomeUniversidade', 100);
             $table->string('cnpj', 20);
+            $table->string('sigla', 10);
             $table->integer('endereco_id')->unsigned();
-
 
             $table->foreign('endereco_id')
                 ->references('id')
