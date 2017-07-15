@@ -26,14 +26,4 @@ class VagasController extends Controller {
        return $reponse;
 
     }
-
-    public function candidatarVaga(Request $request, $id){
-
-        $user = Auth::User();
-
-        $user->vagas()->attach($id);
-
-        return $this->respond('200', ['status' => 'Candidatado a vaga com sucesso.']);
-        
-    }
 }

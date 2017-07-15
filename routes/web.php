@@ -44,6 +44,12 @@ $app->group(['prefix' => 'api'], function() use ($app){
         //Retorna os telefones do usuario
         $app->get('{id}/telefones', 'UsuariosController@getComTelefones');
 
+        // Candidata usuario a vaga
+        $app->post('vaga/{id}', 'UsuariosController@applyToVacant');
+        
+        // Descandidata usuario a vaga
+        $app->delete('vaga/{id}', 'UsuariosController@unapplyToVacant');
+
     });
 
     $app->group(['prefix'=>'estado'], function() use ($app){
