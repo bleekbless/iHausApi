@@ -149,11 +149,12 @@ class UsuariosController extends Controller
         $signer = new Sha256();
 
         return (new Builder())->setIssuer(env('APP_ISSUER')) // Configures the issuer (iss claim)
-->setAudience(env('APP_ISSUER')) // Configures the audience (aud claim)
-->setId(env('APP_KEY'), true) // Configures the id (jti claim), replicating as a header item
-->setIssuedAt(time()) // Configures the time that the token was issue (iat claim)
-->set('uid', $user->id) // Configures a new claim, called "uid"
-->sign($signer, env('TOKEN_PASSWORD'))
+            ->setAudience(env('APP_ISSUER')) // Configures the audience (aud claim)
+            ->setId(env('APP_KEY'), true) // Configures the id (jti claim), replicating as a header item
+            ->setIssuedAt(time()) // Configures the time that the token was issue (iat claim)
+            ->set('uid', $user->id) // Configures a new claim, called "uid"
+            ->set('email', $user->email) // Configures a new claim, called "uid"            
+            ->sign($signer, env('TOKEN_PASSWORD'))
             ->getToken();
     }
 
