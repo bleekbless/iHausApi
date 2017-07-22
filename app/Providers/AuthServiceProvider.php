@@ -40,28 +40,31 @@ class AuthServiceProvider extends ServiceProvider
 
             if( $request->header('api-token') != null ){
                 $token = $request->header('api-token');
-            }else
-            if(isset($_SESSION['token'])) {
-                $token = $_SESSION['token'];
-            }else{
-                return null;
-            }
 
                 if($token){
                     
                     $token = (new Parser())->parse((string) $token);
 
-                    
-
                     $signer = new Sha256();
                     
                     if($token->verify($signer, env('TOKEN_PASSWORD'))){
-                        return Usuario::where('id', $token->getClaim('uid'))->first();
+                        $user = Usuario::where('id', $token->getClaim('uid'))->first();
+                        $email = $token->getClaim('email');
+
+                        if ($email === $user->email) {
+                            return $user;
+                        } else {
+                            return null;                            
+                        }
+                    } else {
+                        return null;
                     }
-                        
+                } else {
+                    return null;
                 }
-                
+            }else{
                 return null;
+            }
         });
     }
 }

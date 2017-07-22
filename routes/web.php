@@ -168,13 +168,13 @@ $app->group(['prefix' => 'api'], function() use ($app){
 
     $app->group(['prefix'=>'vaga'], function() use ($app){
         $app->get('', 'VagasController@all');
+        $app->get('buscar', 'VagasController@buscarVagas');
         $app->get('{id}', 'VagasController@get');
-        $app->post('', 'VagasController@cadastrarVaga');
-        $app->post('{id}', 'VagasController@candidatarVaga');
     });
 
     $app->group(['prefix'=>'vaga', 'middleware'=> 'auth'], function() use ($app){
-        //$app->post('', 'VagasController@cadastrarVaga');
+        $app->post('', 'VagasController@cadastrarVaga');
+        $app->post('candidatar/{id}', 'VagasController@candidatarVaga');
         $app->put('{id}', 'VagasController@put');
         $app->delete('{id}', 'VagasController@remove');
     });

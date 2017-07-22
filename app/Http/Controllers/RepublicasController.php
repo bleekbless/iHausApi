@@ -2,6 +2,7 @@
 
 use Auth;
 use Illuminate\Http\Request;
+use App\Endereco;
 use App\Imagem;
 
 
@@ -12,12 +13,38 @@ class RepublicasController extends Controller
     const IMG = "App\Imagem";
     const TEL = "App\Telefone";
 
-    use RESTActions, ImagemsTrait;
+    use RESTActions, ImagemsTrait, EnderecoTrait;
 
     public function cadastrarRepublica(Request $request)
     {
         $model = $this::MODEL;
         $tel = $this::TEL;
+
+        //pegar o endereco
+        $endereco = json_decode(json_encode($request['endereco']), null);
+
+        //checa se o estado ja existe no banco
+        $estado = $this->checaEstado($endereco->estado);
+
+        //checa se a cidade ja existe no banco
+        $cidade = $this->checaCidade($endereco->cidade, $estado);
+
+        //checa se o bairro ja existe no banco
+        $bairro = $this->checaBairro($endereco->estado, $cidade);
+
+        /*$endereco['estado_id'] = $estado->id;
+        $endereco['cidade_id'] = $cidade->id;*/
+        $endereco->bairro_id = $bairro->id;
+
+        //cria o novo endereco
+        $endereco = Endereco::create(get_object_vars($endereco));
+
+        //Inclui o id do Endereço criado na request feita
+        $request['endereco_id'] = $endereco->id;
+
+        $usuario = Auth::User();
+
+        $request['usuario_id'] = $usuario->id;
 
         $this->validate($request, $model::$rules);
 
