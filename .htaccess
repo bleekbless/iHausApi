@@ -13,10 +13,14 @@ RewriteBase /
 
     RewriteEngine On
 
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)/$ /$1 [L,R=301]
-
+RewriteEngine on 
+RewriteCond %{HTTP_HOST} ^(www.)?republicando.esy.es$ 
+RewriteCond %{REQUEST_URI} !^/public/ 
+RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteCond %{REQUEST_FILENAME} !-d 
+RewriteRule ^(.*)$ /public/$1  
+RewriteCond %{HTTP_HOST} ^(www.)?republicando.esy.es$ 
+RewriteRule ^(/)?$ public/ [L]
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f

@@ -145,8 +145,8 @@ $app->group(['prefix' => 'api'], function() use ($app){
 
     $app->group(['prefix'=>'republica'], function() use ($app){
         $app->get('', 'RepublicasController@all');
-        $app->get('{id}', 'RepublicasController@get');
         $app->get('/buscar', 'RepublicasController@buscarRepublica');
+        $app->get('{id}', 'RepublicasController@get');
     });
 
     $app->group(['prefix'=>'republica', 'middleware'=> 'auth'], function() use ($app){
