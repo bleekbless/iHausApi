@@ -11,8 +11,10 @@ class CreateVagasTable extends Migration
         Schema::create('vagas', function(Blueprint $table) {
             $table->increments('id');
             $table->string('titulo', 100);
+            $table->string('tipo', 100);
             $table->float('valor');
-            $table->date('data')->nullable();
+            $table->date('data');
+            $table->boolean('vaga_garagem')->default(0);
             $table->integer('republica_id')->unsigned();
             $table->foreign('republica_id')
                 ->references('id')
