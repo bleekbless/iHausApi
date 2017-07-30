@@ -2,6 +2,7 @@
 
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Endereco;
 use App\Imagem;
 
@@ -88,6 +89,21 @@ class RepublicasController extends Controller
 
 
         return $this->respond('200', 'República salva com sucesso.');
+    }
+
+    public function getAllByUser($id) {
+
+        $m = $this::MODEL;
+
+        $republicas = $m::where('usuario_id', '=', $id)->get();
+
+        //Não encontrou nada
+        if(sizeof($republicas) == 0){
+            return $this->respond(Response::HTTP_NOT_FOUND);
+        }
+
+        //Retorna as republicas
+        return $this->respond(Response::HTTP_OK, $republicas);
     }
 
     public function buscarRepublica(Request $request)

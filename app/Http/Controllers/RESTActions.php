@@ -19,7 +19,7 @@ trait RESTActions {
         //Verifica se o usuario autenticado é o mesmo que está 
         //tentando acessar os dados comparando o ID do token com o id da requisição
         if(!Auth::check())
-            return $this->respond(Response::HTTP_UNAUTHORIZED, "Unauthorized");
+            return $this->respond(Response::HTTP_UNAUTHORIZED, ["status" => "Unauthorized"]);
 
         $m = self::MODEL;
 
@@ -37,7 +37,7 @@ trait RESTActions {
     public function add(Request $request)
     {
         if(!Auth::check())
-            return $this->respond(Response::HTTP_UNAUTHORIZED, "Unauthorized");
+            return $this->respond(Response::HTTP_UNAUTHORIZED, ["status" => "Unauthorized"]);
         
         $m = self::MODEL;
         $this->validate($request, $m::$rules);
@@ -48,7 +48,7 @@ trait RESTActions {
     {
 
         if(!Auth::check())
-            return $this->respond(Response::HTTP_UNAUTHORIZED, "Unauthorized");
+            return $this->respond(Response::HTTP_UNAUTHORIZED, ["status" => "Unauthorized"]);
 
         $m = self::MODEL;
         $this->validate($request, $m::$rules);
@@ -64,7 +64,7 @@ trait RESTActions {
     {
         //Verificação
         if(!Auth::check())
-            return $this->respond(Response::HTTP_UNAUTHORIZED, "Unauthorized");
+            return $this->respond(Response::HTTP_UNAUTHORIZED, ["status" => "Unauthorized"]);
 
         //Exclusão
         $m = self::MODEL;

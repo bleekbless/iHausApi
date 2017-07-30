@@ -151,6 +151,7 @@ $app->group(['prefix' => 'api'], function() use ($app){
 
     $app->group(['prefix'=>'republica', 'middleware'=> 'auth'], function() use ($app){
         $app->post('', 'RepublicasController@cadastrarRepublica');
+        $app->get('user/{id}', 'RepublicasController@getAllByUser');
         $app->put('{id}', 'RepublicasController@put');
         $app->delete('{id}', 'RepublicasController@remove');
     });
