@@ -5,10 +5,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Notifications\Notifiable;
+use App\Http\Traits\UuidsTrait;
 
 class Usuario extends Model implements CanResetPasswordContract {
 
-    use CanResetPassword, Notifiable;
+    use CanResetPassword, Notifiable, UuidsTrait;
 
     protected $fillable = [
         "nome",
@@ -28,6 +29,8 @@ class Usuario extends Model implements CanResetPasswordContract {
         "email" => "required | unique:usuarios"
     ];
 
+    public $incrementing = false;
+
     // Relationships
 
     public function telefones(){
@@ -41,6 +44,11 @@ class Usuario extends Model implements CanResetPasswordContract {
     public function vagas()
     {
         return $this->belongsToMany("App\Vaga")->withTimestamps();
+    }
+    
+    public function isAdmin()
+    {
+        return $this->admin;
     }
 
 

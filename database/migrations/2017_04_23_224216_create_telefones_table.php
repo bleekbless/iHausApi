@@ -14,7 +14,7 @@ class CreateTelefonesTable extends Migration
 
             $table->unsignedSmallInteger('tipoTelefone_id');
 
-            $table->unsignedInteger('usuario_id')
+            $table->uuid('usuario_id')
                 ->nullable();
 
             $table->unsignedInteger('universidade_id')

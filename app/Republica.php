@@ -16,7 +16,7 @@ class Republica extends Model {
         "descricao" => "required",
         "tipo_republica" => "required|numeric",
         "endereco_id" => "required|numeric",
-        "usuario_id" => "required|numeric",
+        "usuario_id" => "required|string",
     ];
 
 

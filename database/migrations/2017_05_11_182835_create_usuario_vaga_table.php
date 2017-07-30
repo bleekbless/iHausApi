@@ -10,7 +10,7 @@ class CreateUsuarioVagaTable extends Migration
     {
         Schema::create('usuario_vaga', function(Blueprint $table) {
             $table->increments('id');
-            $table->integer('usuario_id')->unsigned()->index();
+            $table->uuid('usuario_id')->index();
             $table->integer('vaga_id')->unsigned()->index();
             $table->foreign('usuario_id')
                 ->references('id')
