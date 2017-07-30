@@ -5,7 +5,7 @@ Header always set Access-Control-Allow-Methods: "POST, GET, OPTIONS, DELETE, PUT
 Header always set Access-Control-Allow-Headers: "api-token, Content-Type"
 Header set Access-Control-Allow-Credentials: true
 
-RewriteBase /
+RewriteBase /public/
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews
