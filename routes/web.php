@@ -151,6 +151,7 @@ $app->group(['prefix' => 'api'], function() use ($app){
 
     $app->group(['prefix'=>'republica', 'middleware'=> 'auth'], function() use ($app){
         $app->post('', 'RepublicasController@cadastrarRepublica');
+        $app->get('user/{id}', 'RepublicasController@getAllByUser');
         $app->put('{id}', 'RepublicasController@put');
         $app->delete('{id}', 'RepublicasController@remove');
     });
@@ -186,32 +187,7 @@ $app->get('/', function () use ($app) {
     return "Api-Documentation para APP iHaus 2017";
 });
 
-
-
-// $app->group(['prefix' => 'admin'], function() use ($app){
-
-//     $app->get('/login', function () use ($app) {
-//         return view('auth.login');
-//     });
-
-//     $app->group(['prefix' => 'cadastrar', 'middleware' => ['auth', 'admin']], function() use ($app){
-
-//         $app->get('/tipo-republica', function () use ($app) {
-//             return view('admin.tiporep');
-//         });
-
-//         $app->get('/tipotel', 'TipoTelefonesController@index');
-
-//         $app->get('/bairro', 'BairrosController@index');
-
-//         $app->get('/cidade', 'CidadesController@findAll');
-
-//         $app->get('/estado', 'EstadosController@index');
-
-//         $app->get('/conveniencia', 'ConvenienciasController@index');
-
-//         $app->get('/universidade', 'UniversidadesController@index');
-
-//     });
-// });
+$app->group(['prefix' => 'admin'], function() use ($app){
+    $app->post('login', 'UsuariosController@loginAdmin');
+});
 

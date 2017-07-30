@@ -1,4 +1,5 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -94,6 +95,38 @@ class UsuariosController extends Controller
 
         return $this->respond('200', ['usuario' => $user, 'token' => $token->__toString()]);
 
+    }
+
+       public function loginAdmin(Request $request)
+    {
+
+
+        $m = $this::MODEL;
+
+        $signer = new Sha256();
+
+        if (!$request['email'] || !$request['password']) {
+            return $this->respond('500', ['error' => 'Email e/ou senha não informados.']);
+        }
+
+        $user = $m::where('email', $request['email'])
+            ->first();
+
+        if (!$user) {
+            return $this->respond('500', ['error' => 'Usuário não encontrado.']);
+        }
+
+        if (!app('hash')->check($request['password'], $user->password)) {
+            return $this->respond('500', ['error' => 'Senha incorreta.']);
+        }
+
+        $token = $this->generateToken($user);
+
+        if($user->isAdmin()){
+            return $this->respond('200', ['usuario' => $user, 'token' => $token->__toString()]);
+        } else {
+            return $this->respond('401', ['status' => 'Forbidden']);
+        }
     }
 
     public function logout()

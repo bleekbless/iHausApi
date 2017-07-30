@@ -1,7 +1,6 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Traits\EnderecoTrait;
 
 use App\Universidade;
 use App\TipoTelefone;
@@ -38,7 +37,7 @@ class UniversidadesController extends Controller
         $cidade = $this->checaCidade($endereco->cidade, $estado);
 
         //checa se o bairro ja existe no banco
-        $bairro = $this->checaBairro($endereco->estado, $cidade);
+        $bairro = $this->checaBairro($endereco->bairro, $cidade);
 
         /*$endereco['estado_id'] = $estado->id;
         $endereco['cidade_id'] = $cidade->id;*/
