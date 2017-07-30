@@ -105,7 +105,7 @@ $app->group(['prefix' => 'api'], function() use ($app){
         $app->get('{id}', 'UniversidadesController@get');
     });
 
-    $app->group(['prefix'=>'universidade', 'middleware'=> 'auth'], function() use ($app){
+    $app->group(['prefix'=>'universidade', 'middleware'=> ['auth', 'admin']], function() use ($app){
         $app->post('', 'UniversidadesController@cadastrarUniversidade');
         $app->put('{id}', 'UniversidadesController@put');
         $app->delete('{id}', 'UniversidadesController@remove');
@@ -126,7 +126,7 @@ $app->group(['prefix' => 'api'], function() use ($app){
         $app->get('{id}', 'TipoRepublicasController@get');
     });
 
-    $app->group(['prefix'=>'tipo-republica', 'middleware'=> 'auth'], function() use ($app){
+    $app->group(['prefix'=>'tipo-republica', 'middleware'=> ['auth', 'admin']], function() use ($app){
         $app->post('', 'TipoRepublicasController@add');
         $app->put('{id}', 'TipoRepublicasController@put');
         $app->delete('{id}', 'TipoRepublicasController@remove');
@@ -137,7 +137,7 @@ $app->group(['prefix' => 'api'], function() use ($app){
         $app->get('{id}', 'TipoTelefonesController@get');
     });
 
-    $app->group(['prefix'=>'tipo-telefone', 'middleware'=> 'auth'], function() use ($app){
+    $app->group(['prefix'=>'tipo-telefone', 'middleware'=> ['auth', 'admin']], function() use ($app){
         $app->post('', 'TipoTelefonesController@add');
         $app->put('{id}', 'TipoTelefonesController@put');
         $app->delete('{id}', 'TipoTelefonesController@remove');
@@ -145,8 +145,8 @@ $app->group(['prefix' => 'api'], function() use ($app){
 
     $app->group(['prefix'=>'republica'], function() use ($app){
         $app->get('', 'RepublicasController@all');
-        $app->get('{id}', 'RepublicasController@get');
         $app->get('/buscar', 'RepublicasController@buscarRepublica');
+        $app->get('{id}', 'RepublicasController@get');
     });
 
     $app->group(['prefix'=>'republica', 'middleware'=> 'auth'], function() use ($app){
@@ -160,7 +160,7 @@ $app->group(['prefix' => 'api'], function() use ($app){
         $app->get('{id}', 'ConvenienciasController@get');
     });
 
-    $app->group(['prefix'=>'conveniencia', 'middleware'=> 'auth'], function() use ($app){
+    $app->group(['prefix'=>'conveniencia', 'middleware'=> ['auth', 'admin']], function() use ($app){
         $app->post('', 'ConvenienciasController@add');
         $app->put('{id}', 'ConvenienciasController@put');
         $app->delete('{id}', 'ConvenienciasController@remove');
@@ -188,30 +188,30 @@ $app->get('/', function () use ($app) {
 
 
 
-$app->group(['prefix' => 'admin'], function() use ($app){
+// $app->group(['prefix' => 'admin'], function() use ($app){
 
-    $app->get('/login', function () use ($app) {
-        return view('auth.login');
-    });
+//     $app->get('/login', function () use ($app) {
+//         return view('auth.login');
+//     });
 
-    $app->group(['prefix' => 'cadastrar', 'middleware' => 'auth'], function() use ($app){
+//     $app->group(['prefix' => 'cadastrar', 'middleware' => ['auth', 'admin']], function() use ($app){
 
-        $app->get('/tipo-republica', function () use ($app) {
-            return view('admin.tiporep');
-        });
+//         $app->get('/tipo-republica', function () use ($app) {
+//             return view('admin.tiporep');
+//         });
 
-        $app->get('/tipotel', 'TipoTelefonesController@index');
+//         $app->get('/tipotel', 'TipoTelefonesController@index');
 
-        $app->get('/bairro', 'BairrosController@index');
+//         $app->get('/bairro', 'BairrosController@index');
 
-        $app->get('/cidade', 'CidadesController@findAll');
+//         $app->get('/cidade', 'CidadesController@findAll');
 
-        $app->get('/estado', 'EstadosController@index');
+//         $app->get('/estado', 'EstadosController@index');
 
-        $app->get('/conveniencia', 'ConvenienciasController@index');
+//         $app->get('/conveniencia', 'ConvenienciasController@index');
 
-        $app->get('/universidade', 'UniversidadesController@index');
+//         $app->get('/universidade', 'UniversidadesController@index');
 
-    });
-});
+//     });
+// });
 

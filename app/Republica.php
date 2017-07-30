@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Republica extends Model {
 
-    protected $fillable = ["nomeRepublica", "curso", "quantidadeQuartos", "quantidadeMoradores", "descricao", "tipo_republica","universidade","endereco_id","usuario_id"];
+    protected $fillable = ["nomeRepublica", "curso", "quantidadeQuartos", "quantidadeMoradores", "descricao", "tipo_republica","universidade_id","endereco_id","usuario_id"];
 
     protected $dates = [];
 
@@ -16,7 +16,7 @@ class Republica extends Model {
         "descricao" => "required",
         "tipo_republica" => "required|numeric",
         "endereco_id" => "required|numeric",
-        "usuario_id" => "required|numeric",
+        "usuario_id" => "required|string",
     ];
 
 

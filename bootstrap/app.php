@@ -7,7 +7,6 @@ try {
 } catch (Dotenv\Exception\InvalidPathException $e) {
     //
 }
-
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -75,6 +74,7 @@ $app->bind(Illuminate\Session\SessionManager::class, function ($app) {
 
  $app->routeMiddleware([
    'auth' =>  \App\Http\Middleware\Authenticate::class,
+   'admin' => \App\Http\Middleware\Admin::class,
  ]);
 
 /*
@@ -95,6 +95,7 @@ $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(\Illuminate\Notifications\NotificationServiceProvider::class);
 $app->register(\Illuminate\Session\SessionServiceProvider::class);
 $app->alias('mailer', \Illuminate\Contracts\Mail\Mailer::class);
+$app->alias('uuid', Webpatser\Uuid\Uuid::class);
 
 $app->configure('services');
 $app->configure('mail');

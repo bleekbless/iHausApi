@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Traits\EnderecoTrait;
 
 use App\Universidade;
 use App\TipoTelefone;

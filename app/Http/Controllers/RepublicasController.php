@@ -20,6 +20,10 @@ class RepublicasController extends Controller
         $model = $this::MODEL;
         $tel = $this::TEL;
 
+        if (!$request['endereco']) {
+            return $this->respond('500', ['status' => 'Favor digitar o endereço.']);
+        }
+
         //pegar o endereco
         $endereco = json_decode(json_encode($request['endereco']), null);
 
@@ -78,8 +82,8 @@ class RepublicasController extends Controller
             }
         }
 
-        if ($request->hasFile('imagens')) {
-            $res = $this->UploadImages($request, $republica);
+        if ($request['imagens']) {
+            $res = $this->UploadImages($request['imagens'], $republica);
         }
 
 

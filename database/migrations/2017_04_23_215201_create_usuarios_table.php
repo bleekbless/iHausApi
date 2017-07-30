@@ -9,7 +9,9 @@ class CreateUsuariosTable extends Migration
     public function up()
     {
         Schema::create('usuarios', function(Blueprint $table) {
-            $table->increments('id');
+            $table->uuid('id');
+            $table->primary('id');
+            $table->boolean('admin')->default(false);
             $table->string('nome', 100);
             $table->string('sobrenome', 100);
             $table->string('email')->unique();
