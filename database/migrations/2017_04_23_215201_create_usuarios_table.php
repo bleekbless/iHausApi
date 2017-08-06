@@ -16,6 +16,7 @@ class CreateUsuariosTable extends Migration
             $table->string('sobrenome', 100);
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('notificationToken');
             // Constraints declaration
             $table->timestamps();
         });

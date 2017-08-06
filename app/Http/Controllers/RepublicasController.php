@@ -68,7 +68,7 @@ class RepublicasController extends Controller
                 $republica->telefones()
                     ->save($tel::create([
                     'numeroTelefone' => $telefone['numeroTelefone'],
-                    'idTipoTelefone' => $telefone['idTipoTelefone']
+                    'tipoTelefone_id' => $telefone['tipoTelefone_id']
                 ]));
             }
         }

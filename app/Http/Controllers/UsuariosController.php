@@ -17,6 +17,7 @@ class UsuariosController extends Controller
 
     const MODEL = "App\Usuario";
     const TEL = "App\Telefone";
+    const VAGA = "App\Vaga";
 
     use RESTActions;
 
@@ -58,6 +59,8 @@ class UsuariosController extends Controller
             }
         }
 
+        $user->notificationToken = $request['notificationToken'];
+
         $token = $this->generateToken($user);
 
         return $this->respond('200', ['usuario' => $user, 'token' => $token->__toString()]);
@@ -86,21 +89,16 @@ class UsuariosController extends Controller
             return $this->respond('500', ['error' => 'Senha incorreta.']);
         }
 
-        $token = $this->generateToken($user);
+        $user->notificationToken = $request['notificationToken'];
 
-        // if($user->id == 1){
-        //     $_SESSION['token'] = $token->getToken();
-        //     return view('dashboard');
-        // }
+        $token = $this->generateToken($user);
 
         return $this->respond('200', ['usuario' => $user, 'token' => $token->__toString()]);
 
     }
 
-       public function loginAdmin(Request $request)
+    public function loginAdmin(Request $request)
     {
-
-
         $m = $this::MODEL;
 
         $signer = new Sha256();
@@ -131,9 +129,7 @@ class UsuariosController extends Controller
 
     public function logout()
     {
-        if (session_id() != '')
-            session_destroy();
-        return redirect('/admin/login');
+        
     }
 
     public function updateUsuarioComSenha(Request $request, $id)
@@ -159,12 +155,22 @@ class UsuariosController extends Controller
 
     public function applyToVacant(Request $request, $id)
     {
+        $vaga = $this::VAGA;
+
         $user = Auth::User();
 
         $user->vagas()->attach($id);
 
-        return $this->respond('201', ['status' => 'Candidatado a vaga com sucesso.']);
+        $notificationToken = $vaga::find($id)->republica()->usuario()->notificationToken;
 
+        return $this->respond(
+            '201', 
+            [
+                'status' => [
+                    'message' => 'Candidatado a vaga com sucesso.', 
+                    'notificationToken' => $notificationToken 
+                ]
+            ]);
     }
 
     public function unapplyToVacant(Request $request, $id)
@@ -186,7 +192,8 @@ class UsuariosController extends Controller
             ->setId(env('APP_KEY'), true) // Configures the id (jti claim), replicating as a header item
             ->setIssuedAt(time()) // Configures the time that the token was issue (iat claim)
             ->set('uid', $user->id) // Configures a new claim, called "uid"
-            ->set('email', $user->email) // Configures a new claim, called "uid"            
+            ->set('email', $user->email) // Configures a new claim, called "uid"
+            ->set('notificationToken', $user->notificationToken)            
             ->sign($signer, env('TOKEN_PASSWORD'))
             ->getToken();
     }
