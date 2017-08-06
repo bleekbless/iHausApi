@@ -17,6 +17,7 @@ class UsuariosController extends Controller
 
     const MODEL = "App\Usuario";
     const TEL = "App\Telefone";
+    const VAGA = "App\Vaga";
 
     use RESTActions;
 
@@ -152,12 +153,22 @@ class UsuariosController extends Controller
 
     public function applyToVacant(Request $request, $id)
     {
+        $vaga = $this::VAGA;
+
         $user = Auth::User();
 
         $user->vagas()->attach($id);
 
-        return $this->respond('201', ['status' => 'Candidatado a vaga com sucesso.']);
+        $notificationToken = $vaga::find($id)->republica()->usuario()->notificationToken;
 
+        return $this->respond(
+            '201', 
+            [
+                'status' => [
+                    'message' => 'Candidatado a vaga com sucesso.', 
+                    'notificationToken' => $notificationToken 
+                ]
+            ]);
     }
 
     public function unapplyToVacant(Request $request, $id)
