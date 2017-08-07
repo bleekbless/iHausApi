@@ -15,7 +15,8 @@ class Usuario extends Model implements CanResetPasswordContract {
         "nome",
         "sobrenome",
         "email",
-        "password"
+        "password",
+        "notificationToken"
         ];
 
     protected $dates = [];

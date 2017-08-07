@@ -59,8 +59,6 @@ class UsuariosController extends Controller
             }
         }
 
-        $user->notificationToken = $request['notificationToken'];
-
         $token = $this->generateToken($user);
 
         return $this->respond('200', ['usuario' => $user, 'token' => $token->__toString()]);
