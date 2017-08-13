@@ -183,4 +183,22 @@ class RepublicasController extends Controller
 
     }
 
+    public function removerRepublica($id)
+    {
+        //Verificação
+        if(!Auth::check())
+            return $this->respond(Response::HTTP_UNAUTHORIZED, ["status" => "Unauthorized"]);
+
+        //Exclusão
+        $m = $this::MODEL;
+        if(is_null($m::find($id))){
+            return $this->respond(Response::HTTP_NOT_FOUND);
+        }
+
+        $m::find($id)->conveniencias()->detach();
+        $m::destroy($id);
+        
+        return $this->respond(Response::HTTP_OK, 'Removido com sucesso.');
+    }
+
 }

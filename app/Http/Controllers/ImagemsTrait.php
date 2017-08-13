@@ -41,7 +41,7 @@ trait ImagemsTrait {
             $img = substr($string_imagem, strpos($string_imagem, ",") + 1);
             $data = base64_decode($img);
 
-            $success = file_put_contents($destinationPath, $data);
+            $data->move($destinationPath, $img);
 
             $republica->imagens()
              ->create([

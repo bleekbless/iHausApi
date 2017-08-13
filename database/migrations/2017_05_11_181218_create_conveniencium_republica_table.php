@@ -16,11 +16,11 @@ class CreateConvenienciumRepublicaTable extends Migration
 
             $table->foreign('conveniencia_id')
                 ->references('id')
-                ->on('conveniencias');
+                ->on('conveniencias')->onDelete('cascade');
 
             $table->foreign('republica_id')
                 ->references('id')
-                ->on('republicas');
+                ->on('republicas')->onDelete('cascade');
             $table->timestamps();
         });
     }
