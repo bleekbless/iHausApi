@@ -95,11 +95,11 @@ class RepublicasController extends Controller
 
         $m = $this::MODEL;
 
-        $republicas = $m::where('usuario_id', '=', $id)->get();
+        $republicas = $m::where('usuario_id', '=', $id)->with(['endereco', 'imagens', 'universidade', 'vagas'])->get();
 
         //Não encontrou nada
         if(sizeof($republicas) == 0){
-            return $this->respond(Response::HTTP_NOT_FOUND);
+            return $this->respond(Response::HTTP_NOT_FOUND, ['status' => 'Nothing found for this user']);
         }
 
         //Retorna as republicas
@@ -194,8 +194,10 @@ class RepublicasController extends Controller
         if(is_null($m::find($id))){
             return $this->respond(Response::HTTP_NOT_FOUND);
         }
-
         $m::find($id)->conveniencias()->detach();
+
+        $m::find($id)->imagens()->delete();
+
         $m::destroy($id);
         
         return $this->respond(Response::HTTP_OK, 'Removido com sucesso.');

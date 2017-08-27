@@ -25,23 +25,18 @@ trait ImagemsTrait {
             $filename = '_'.$key.'_foto.jpg';
             $picture = strtotime(Carbon::now()).$filename;
 
-            if (!is_dir(base_path() . '\public\documentos')) {
-                mkdir(base_path() . '\public\documentos');
-                mkdir(base_path() . '\public\documentos\users');
+            if (!is_dir(public_path() . '/documentos/users/' . Auth::user()->id)) {
+               mkdir(public_path() . '/documentos/users/' . Auth::user()->id);
+               mkdir(public_path() . '/documentos/users/' . Auth::user()->id . '/images');
             }
 
-            if (!is_dir(base_path() . '\public\documentos\users\\' . Auth::user()->id)) {
-               mkdir(base_path() . '\public\documentos\users\\' . Auth::user()->id);
-               mkdir(base_path() . '\public\documentos\users\\' . Auth::user()->id . '\images');
-            }
-
-            $URL = '\documentos\users\\' . Auth::user()->id . '\images\\'.$picture;
-            $destinationPath = base_path() . $URL;
+            $URL = '/documentos/users/' . Auth::user()->id . '/images/' .$picture;
+            $destinationPath = public_path() . $URL;
 
             $img = substr($string_imagem, strpos($string_imagem, ",") + 1);
             $data = base64_decode($img);
 
-            $data->move($destinationPath, $img);
+            $success = file_put_contents($destinationPath, $data);
 
             $republica->imagens()
              ->create([

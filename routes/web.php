@@ -89,6 +89,17 @@ $app->group(['prefix' => 'api'], function() use ($app){
         $app->delete('{id}', 'BairrosController@remove');
     });
 
+    $app->group(['prefix'=>'complemento'], function () use ($app) {
+        $app->post('', '');
+        $app->put('{id}', '');
+        $app->delete('{id}', '');
+    });
+    
+    $app->group(['prefix'=>'complemento', 'middleware' => ['auth', 'admin']], function () use ($app) {
+        $app->get('', '');
+        $app->get('{id}', '');
+    });
+
     $app->group(['prefix'=>'endereco'], function() use ($app){
         $app->get('', 'EnderecosController@all');
         $app->get('{id}', 'EnderecosController@get');
