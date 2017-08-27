@@ -8,7 +8,7 @@ class CreateEnderecosTable extends Migration
 
     public function up()
     {
-        Schema::create('enderecos', function(Blueprint $table) {
+        Schema::create('enderecos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('logradouro', 100);
             $table->smallInteger('numero');
@@ -18,6 +18,10 @@ class CreateEnderecosTable extends Migration
             $table->foreign('bairro_id')
                 ->references('id')
                 ->on('bairros');
+            $table->unsignedSmallInteger('complemento_id');
+            $table->foreign('complemento_id')
+                ->references('id')
+                ->on('comlpementos');
             $table->timestamps();
         });
     }

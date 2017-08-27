@@ -139,3 +139,21 @@ $factory->define(App\Vaga::class, function ($faker) {
         'republica_id' => $faker->key,
     ];
 });
+
+/**
+ * Factory definition for model App\Complemento.
+ */
+$factory->define(App\Complemento::class, function ($faker) {
+    return [
+        // Fields here
+    ];
+});
+
+/**
+ * Factory definition for model App\Complemento.
+ */
+$factory->define(App\Complemento::class, function ($faker) {
+    return [
+        // Fields here
+    ];
+});

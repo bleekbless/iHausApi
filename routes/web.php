@@ -90,14 +90,14 @@ $app->group(['prefix' => 'api'], function() use ($app){
     });
 
     $app->group(['prefix'=>'complemento'], function () use ($app) {
-        $app->post('', '');
-        $app->put('{id}', '');
-        $app->delete('{id}', '');
+        $app->get('', 'ComplementosController@all');
+        $app->get('{id}', 'ComplementosController@get');
     });
     
     $app->group(['prefix'=>'complemento', 'middleware' => ['auth', 'admin']], function () use ($app) {
-        $app->get('', '');
-        $app->get('{id}', '');
+        $app->post('', 'ComplementosController@add');
+        $app->put('{id}', 'ComplementosController@put');
+        $app->delete('{id}', 'ComplementosController@remove');
     });
 
     $app->group(['prefix'=>'endereco'], function() use ($app){
@@ -201,4 +201,3 @@ $app->get('/', function () use ($app) {
 $app->group(['prefix' => 'admin'], function() use ($app){
     $app->post('login', 'UsuariosController@loginAdmin');
 });
-
