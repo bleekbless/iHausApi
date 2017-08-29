@@ -46,6 +46,11 @@ class Usuario extends Model implements CanResetPasswordContract {
     {
         return $this->belongsToMany("App\Vaga")->withTimestamps();
     }
+
+    public function visitas()
+    {
+        return $this->hasMany("App\Visita");
+    }
     
     public function isAdmin()
     {

@@ -6,7 +6,7 @@ class Vaga extends Model {
 
     protected $fillable = ["titulo", "valor", "tipo", "republica_id", "vaga_garagem"];
 
-    protected $dates = [];
+    protected $dates = ["data"];
 
     public static $rules = [
         "titulo" => "required|string",
@@ -27,6 +27,11 @@ class Vaga extends Model {
     public function usuarios()
     {
         return $this->belongsToMany("App\Usuario")->withTimestamps();
+    }
+
+    public function visitas()
+    {
+        return $this->hasMany("App\Visita");
     }
 
 

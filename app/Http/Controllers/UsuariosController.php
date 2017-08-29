@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use Auth;
+use App\Consts\Notification;
 use Illuminate\Support\Facades\Session;
 
 class UsuariosController extends Controller
@@ -19,7 +20,7 @@ class UsuariosController extends Controller
     const TEL = "App\Telefone";
     const VAGA = "App\Vaga";
 
-    use RESTActions;
+    use RESTActions, NotificationTrait;
 
 
 
@@ -161,13 +162,13 @@ class UsuariosController extends Controller
 
         $notificationToken = $vaga::find($id)->republica()->usuario()->notificationToken;
 
-        return $this->respond(
-            '201', 
-            [
-                'status' => [
-                    'message' => 'Candidatado a vaga com sucesso.', 
-                    'notificationToken' => $notificationToken 
-                ]
+        $this->sendMessage($notificationToken, Notification::NOTIFICATION_APPLIED);
+
+
+        return $this->respond('201', [
+            'status' => [
+                    'message' => 'Candidatado a vaga com sucesso.'
+                    ]
             ]);
     }
 
