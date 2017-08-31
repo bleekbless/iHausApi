@@ -2,6 +2,8 @@
 
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use App\Endereco;
 use App\Imagem;
 
 
@@ -12,12 +14,42 @@ class RepublicasController extends Controller
     const IMG = "App\Imagem";
     const TEL = "App\Telefone";
 
-    use RESTActions, ImagemsTrait;
+    use RESTActions, ImagemsTrait, EnderecoTrait;
 
     public function cadastrarRepublica(Request $request)
     {
         $model = $this::MODEL;
         $tel = $this::TEL;
+
+        if (!$request['endereco']) {
+            return $this->respond('500', ['status' => 'Favor digitar o endereço.']);
+        }
+
+        //pegar o endereco
+        $endereco = json_decode(json_encode($request['endereco']), null);
+
+        //checa se o estado ja existe no banco
+        $estado = $this->checaEstado($endereco->estado);
+
+        //checa se a cidade ja existe no banco
+        $cidade = $this->checaCidade($endereco->cidade, $estado);
+
+        //checa se o bairro ja existe no banco
+        $bairro = $this->checaBairro($endereco->bairro, $cidade);
+
+        /*$endereco['estado_id'] = $estado->id;
+        $endereco['cidade_id'] = $cidade->id;*/
+        $endereco->bairro_id = $bairro->id;
+
+        //cria o novo endereco
+        $endereco = Endereco::create(get_object_vars($endereco));
+
+        //Inclui o id do Endereço criado na request feita
+        $request['endereco_id'] = $endereco->id;
+
+        $usuario = Auth::User();
+
+        $request['usuario_id'] = $usuario->id;
 
         $this->validate($request, $model::$rules);
 
@@ -36,7 +68,7 @@ class RepublicasController extends Controller
                 $republica->telefones()
                     ->save($tel::create([
                     'numeroTelefone' => $telefone['numeroTelefone'],
-                    'idTipoTelefone' => $telefone['idTipoTelefone']
+                    'tipoTelefone_id' => $telefone['tipoTelefone_id']
                 ]));
             }
         }
@@ -51,12 +83,27 @@ class RepublicasController extends Controller
             }
         }
 
-        if ($request->hasFile('imagens')) {
-            $res = $this->UploadImages($request, $republica);
+        if ($request['imagens']) {
+            $res = $this->UploadImages($request['imagens'], $republica);
         }
 
 
         return $this->respond('200', 'República salva com sucesso.');
+    }
+
+    public function getAllByUser($id) {
+
+        $m = $this::MODEL;
+
+        $republicas = $m::where('usuario_id', '=', $id)->with(['endereco', 'imagens', 'universidade', 'vagas'])->get();
+
+        //Não encontrou nada
+        if(sizeof($republicas) == 0){
+            return $this->respond(Response::HTTP_NOT_FOUND, ['status' => 'Nothing found for this user']);
+        }
+
+        //Retorna as republicas
+        return $this->respond(Response::HTTP_OK, $republicas);
     }
 
     public function buscarRepublica(Request $request)
@@ -134,6 +181,26 @@ class RepublicasController extends Controller
 
         return $this->respond('200', $resultado);
 
+    }
+
+    public function removerRepublica($id)
+    {
+        //Verificação
+        if(!Auth::check())
+            return $this->respond(Response::HTTP_UNAUTHORIZED, ["status" => "Unauthorized"]);
+
+        //Exclusão
+        $m = $this::MODEL;
+        if(is_null($m::find($id))){
+            return $this->respond(Response::HTTP_NOT_FOUND);
+        }
+        $m::find($id)->conveniencias()->detach();
+
+        $m::find($id)->imagens()->delete();
+
+        $m::destroy($id);
+        
+        return $this->respond(Response::HTTP_OK, 'Removido com sucesso.');
     }
 
 }

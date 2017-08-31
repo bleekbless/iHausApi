@@ -7,31 +7,40 @@ use Auth;
 
 trait ImagemsTrait {
 
-    public function UploadImages(Request $request, $republica)
+    public function UploadImages($_imagens, $republica)
     {
         $m = self::IMG;
 
 
-        if(!$request->hasFile('imagens')){
-            return $this->respond('500', ['status' => 'Erro. Favor selecione alguma imagem.']);
+        if(!$_imagens){
+            return $this->respond('500', ['status' => 'Favor selecione alguma imagem.']);
         }
 
         $picture = '';
 
         //Pega as imagens selecionadas
-        $imagens = $request->file('imagens');
+        $imagens = $_imagens;
 
-        foreach ($imagens as $imagem) {
-            $filename = '_foto.jpg';
-            $extension = $imagem->getClientOriginalExtension();
+        foreach ($imagens as $key=>$string_imagem) {
+            $filename = '_'.$key.'_foto.jpg';
             $picture = strtotime(Carbon::now()).$filename;
-            $URL = '\public\documentos\usuarios\\' . 'ID' . '\imagens\fotos';
-            $destinationPath = base_path() . $URL;
-            $imagem->move($destinationPath, $picture);
+
+            if (!is_dir(public_path() . '/documentos/users/' . Auth::user()->id)) {
+               mkdir(public_path() . '/documentos/users/' . Auth::user()->id);
+               mkdir(public_path() . '/documentos/users/' . Auth::user()->id . '/images');
+            }
+
+            $URL = '/documentos/users/' . Auth::user()->id . '/images/' .$picture;
+            $destinationPath = public_path() . $URL;
+
+            $img = substr($string_imagem, strpos($string_imagem, ",") + 1);
+            $data = base64_decode($img);
+
+            $success = file_put_contents($destinationPath, $data);
 
             $republica->imagens()
              ->create([
-                 'url' => $URL.'\\'.$picture,
+                 'url' => $URL,
                  ]);
             
         }

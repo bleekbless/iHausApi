@@ -1,4 +1,5 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use Auth;
+use App\Consts\Notification;
 use Illuminate\Support\Facades\Session;
 
 class UsuariosController extends Controller
@@ -16,8 +18,9 @@ class UsuariosController extends Controller
 
     const MODEL = "App\Usuario";
     const TEL = "App\Telefone";
+    const VAGA = "App\Vaga";
 
-    use RESTActions;
+    use RESTActions, NotificationTrait;
 
 
 
@@ -85,22 +88,47 @@ class UsuariosController extends Controller
             return $this->respond('500', ['error' => 'Senha incorreta.']);
         }
 
-        $token = $this->generateToken($user);
+        $user->notificationToken = $request['notificationToken'];
 
-        // if($user->id == 1){
-        //     $_SESSION['token'] = $token->getToken();
-        //     return view('dashboard');
-        // }
+        $token = $this->generateToken($user);
 
         return $this->respond('200', ['usuario' => $user, 'token' => $token->__toString()]);
 
     }
 
+    public function loginAdmin(Request $request)
+    {
+        $m = $this::MODEL;
+
+        $signer = new Sha256();
+
+        if (!$request['email'] || !$request['password']) {
+            return $this->respond('500', ['error' => 'Email e/ou senha não informados.']);
+        }
+
+        $user = $m::where('email', $request['email'])
+            ->first();
+
+        if (!$user) {
+            return $this->respond('500', ['error' => 'Usuário não encontrado.']);
+        }
+
+        if (!app('hash')->check($request['password'], $user->password)) {
+            return $this->respond('500', ['error' => 'Senha incorreta.']);
+        }
+
+        $token = $this->generateToken($user);
+
+        if($user->isAdmin()){
+            return $this->respond('200', ['usuario' => $user, 'token' => $token->__toString()]);
+        } else {
+            return $this->respond('401', ['status' => 'Forbidden']);
+        }
+    }
+
     public function logout()
     {
-        if (session_id() != '')
-            session_destroy();
-        return redirect('/admin/login');
+        
     }
 
     public function updateUsuarioComSenha(Request $request, $id)
@@ -126,12 +154,22 @@ class UsuariosController extends Controller
 
     public function applyToVacant(Request $request, $id)
     {
+        $vaga = $this::VAGA;
+
         $user = Auth::User();
 
         $user->vagas()->attach($id);
 
-        return $this->respond('201', ['status' => 'Candidatado a vaga com sucesso.']);
+        $notificationToken = $vaga::find($id)->republica()->usuario()->notificationToken;
 
+        $this->sendMessage($notificationToken, Notification::NOTIFICATION_APPLIED);
+
+
+        return $this->respond('201', [
+            'status' => [
+                    'message' => 'Candidatado a vaga com sucesso.'
+                    ]
+            ]);
     }
 
     public function unapplyToVacant(Request $request, $id)
@@ -149,11 +187,13 @@ class UsuariosController extends Controller
         $signer = new Sha256();
 
         return (new Builder())->setIssuer(env('APP_ISSUER')) // Configures the issuer (iss claim)
-->setAudience(env('APP_ISSUER')) // Configures the audience (aud claim)
-->setId(env('APP_KEY'), true) // Configures the id (jti claim), replicating as a header item
-->setIssuedAt(time()) // Configures the time that the token was issue (iat claim)
-->set('uid', $user->id) // Configures a new claim, called "uid"
-->sign($signer, env('TOKEN_PASSWORD'))
+            ->setAudience(env('APP_ISSUER')) // Configures the audience (aud claim)
+            ->setId(env('APP_KEY'), true) // Configures the id (jti claim), replicating as a header item
+            ->setIssuedAt(time()) // Configures the time that the token was issue (iat claim)
+            ->set('uid', $user->id) // Configures a new claim, called "uid"
+            ->set('email', $user->email) // Configures a new claim, called "uid"
+            ->set('notificationToken', $user->notificationToken)            
+            ->sign($signer, env('TOKEN_PASSWORD'))
             ->getToken();
     }
 

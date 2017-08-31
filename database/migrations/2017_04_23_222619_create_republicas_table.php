@@ -18,7 +18,7 @@ class CreateRepublicasTable extends Migration
             $table->integer('tipo_republica')->unsigned();
             $table->integer('universidade_id')->unsigned()->nullable();
             $table->integer('endereco_id')->unsigned();
-            $table->integer('usuario_id')->unsigned();
+            $table->uuid('usuario_id');
 
             $table->foreign('tipo_republica')
                 ->references('id')

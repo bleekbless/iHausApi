@@ -26,6 +26,11 @@ class Endereco extends Model {
         return $this->belongsTo("App\Bairro");
     }
 
+    public function complemento()
+    {
+        return $this->belongsTo("App\Complemento");
+    }
+
     public function republicas()
     {
         return $this->hasMany("App\Republica");

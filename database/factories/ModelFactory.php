@@ -139,3 +139,31 @@ $factory->define(App\Vaga::class, function ($faker) {
         'republica_id' => $faker->key,
     ];
 });
+
+/**
+ * Factory definition for model App\Complemento.
+ */
+$factory->define(App\Complemento::class, function ($faker) {
+    return [
+        // Fields here
+    ];
+});
+
+/**
+ * Factory definition for model App\Complemento.
+ */
+$factory->define(App\Complemento::class, function ($faker) {
+    return [
+        // Fields here
+    ];
+});
+
+/**
+ * Factory definition for model App\Visita.
+ */
+$factory->define(App\Visita::class, function ($faker) {
+    return [
+        'vaga_id' => $faker->fillable,key,
+        'vaga_id' => $faker->key,
+    ];
+});

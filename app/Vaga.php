@@ -4,15 +4,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vaga extends Model {
 
-    protected $fillable = ["titulo", "valor", "data", "republica_id"];
+    protected $fillable = ["titulo", "valor", "tipo", "republica_id", "vaga_garagem"];
 
-    protected $dates = [];
+    protected $dates = ["data"];
 
     public static $rules = [
-        "titulo" => "required",
-        "valor" => "required",
-        "data" => "required",
+        "titulo" => "required|string",
+        "valor" => "required|numeric",
+        "tipo" => "required|string",
+        "data" => "required|date",
         "republica_id" => "required|numeric",
+        "vaga_garagem" => "boolean"
     ];
 
     public $timestamps = false;
@@ -25,6 +27,11 @@ class Vaga extends Model {
     public function usuarios()
     {
         return $this->belongsToMany("App\Usuario")->withTimestamps();
+    }
+
+    public function visitas()
+    {
+        return $this->hasMany("App\Visita");
     }
 
 
